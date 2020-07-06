@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Biling/Biling.iml" filepath="$PROJECT_DIR$/Biling/Biling.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Billing/Billing.iml" filepath="$PROJECT_DIR$/Billing/Billing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BillingAmountView/BillingAmountView.iml" filepath="$PROJECT_DIR$/BillingAmountView/BillingAmountView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DealAmountView/DealAmountView.iml" filepath="$PROJECT_DIR$/DealAmountView/DealAmountView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/OnePoint.iml" filepath="$PROJECT_DIR$/.idea/OnePoint.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway/boot-camp-gateway.iml" filepath="$PROJECT_DIR$/gateway/boot-camp-gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/charging/charging.iml" filepath="$PROJECT_DIR$/charging/charging.iml" />
+      <module fileurl="file://$PROJECT_DIR$/deal/deal.iml" filepath="$PROJECT_DIR$/deal/deal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/member/member.iml" filepath="$PROJECT_DIR$/member/member.iml" />
+      <module fileurl="file://$PROJECT_DIR$/point/point.iml" filepath="$PROJECT_DIR$/point/point.iml" />
+    </modules>
+  </component>
+</project>

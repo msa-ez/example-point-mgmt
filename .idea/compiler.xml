@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="deal" />
+        <module name="Biling" />
+        <module name="Billing" />
+        <module name="DealAmountView" />
+        <module name="boot-camp-gateway" />
+        <module name="charging" />
+        <module name="point" />
+        <module name="member" />
+        <module name="BillingAmountView" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Biling" target="1.8" />
+      <module name="Billing" target="1.8" />
+      <module name="BillingAmountView" target="1.8" />
+      <module name="boot-camp-gateway" target="1.8" />
+      <module name="charging" target="1.8" />
+      <module name="deal" target="1.8" />
+      <module name="DealAmountView" target="1.8" />
+      <module name="member" target="1.8" />
+      <module name="point" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Biling" options="-parameters" />
+      <module name="Billing" options="-parameters" />
+      <module name="BillingAmountView" options="-parameters" />
+      <module name="DealAmountView" options="-parameters" />
+      <module name="boot-camp-gateway" options="-parameters" />
+      <module name="charging" options="-parameters" />
+      <module name="deal" options="-parameters" />
+      <module name="member" options="-parameters" />
+      <module name="point" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -1,0 +1,10 @@
+OnePoint/AbstractEvent.class
+OnePoint/Application.class
+OnePoint/MemberCreated.class
+OnePoint/MemberController.class
+OnePoint/Member.class
+OnePoint/MemberSecession.class
+OnePoint/PolicyHandler.class
+OnePoint/config/kafka/KafkaProcessor.class
+OnePoint/AbstractEvent$1.class
+OnePoint/MemberRepository.class

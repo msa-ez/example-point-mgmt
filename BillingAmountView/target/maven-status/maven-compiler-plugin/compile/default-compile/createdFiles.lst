@@ -1,0 +1,12 @@
+OnePoint/Application.class
+OnePoint/BillingAmountViewViewHandler.class
+OnePoint/BillingAmountViewController.class
+OnePoint/BillingRequest.class
+OnePoint/PolicyHandler.class
+OnePoint/config/kafka/KafkaProcessor.class
+OnePoint/BillingAmountService.class
+OnePoint/AbstractEvent.class
+OnePoint/UseRequested.class
+OnePoint/BillingAmountViewRepository.class
+OnePoint/BillingAmountView.class
+OnePoint/AbstractEvent$1.class

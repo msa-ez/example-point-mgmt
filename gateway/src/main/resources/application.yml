@@ -1,0 +1,82 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: point
+          uri: http://localhost:8081
+          predicates:
+            - Path=/deals/**/points/** 
+        - id: member
+          uri: http://localhost:8082
+          predicates:
+            - Path=/members/** 
+        - id: BillingAmountView
+          uri: http://localhost:8083
+          predicates:
+            - Path= /billingAmountViews/**
+        - id: Billing
+          uri: http://localhost:8084
+          predicates:
+            - Path=/billings/** 
+        - id: deal
+          uri: http://localhost:8085
+          predicates:
+            - Path=/deals/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: point
+          uri: http://point:8080
+          predicates:
+            - Path=/deals/**/points/** 
+        - id: member
+          uri: http://member:8080
+          predicates:
+            - Path=/members/** 
+        - id: BillingAmountView
+          uri: http://BillingAmountView:8080
+          predicates:
+            - Path= /billingAmountViews/**
+        - id: Billing
+          uri: http://Billing:8080
+          predicates:
+            - Path=/billings/** 
+        - id: deal
+          uri: http://deal:8080
+          predicates:
+            - Path=/deals/** 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080

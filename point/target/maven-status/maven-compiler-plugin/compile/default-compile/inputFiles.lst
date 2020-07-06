@@ -1,0 +1,17 @@
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/PointDisappeared.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/controller/PointLackException.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/MemberCreated.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/PointDecreased.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/controller/PointDecreaseRequest.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/service/PointService.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/handeler/PolicyHandler.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/AbstractEvent.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/PointIncreased.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/PointCreated.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Point.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/repostory/PointRepository.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/config/kafka/KafkaProcessor.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/controller/PointController.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Application.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/Model/Event/MemberSecession.java
+/Users/seoyeon/IdeaProjects/OnePoint/point/src/main/java/OnePoint/controller/PointIncreaseRequest.java

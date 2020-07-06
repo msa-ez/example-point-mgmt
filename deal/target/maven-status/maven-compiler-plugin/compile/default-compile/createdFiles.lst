@@ -1,0 +1,12 @@
+OnePoint/Deal.class
+OnePoint/Application.class
+OnePoint/DealController.class
+OnePoint/DealRepository.class
+OnePoint/external/PointService.class
+OnePoint/PolicyHandler.class
+OnePoint/config/kafka/KafkaProcessor.class
+OnePoint/SaveDealt.class
+OnePoint/external/Point.class
+OnePoint/AbstractEvent.class
+OnePoint/UseRequested.class
+OnePoint/AbstractEvent$1.class

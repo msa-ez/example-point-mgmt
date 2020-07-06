@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.RequestMapping" />
+    </list>
+  </component>
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/deal/pom.xml" />
+        <option value="$PROJECT_DIR$/charging/pom.xml" />
+        <option value="$PROJECT_DIR$/DealAmountView/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/member/pom.xml" />
+        <option value="$PROJECT_DIR$/point/pom.xml" />
+        <option value="$PROJECT_DIR$/Biling/pom.xml" />
+        <option value="$PROJECT_DIR$/BillingAmountView/pom.xml" />
+        <option value="$PROJECT_DIR$/Billing/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
+</project>

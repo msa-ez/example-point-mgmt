@@ -1,0 +1,9 @@
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/MemberController.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/AbstractEvent.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/PolicyHandler.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/MemberCreated.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/MemberSecession.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/Member.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/config/kafka/KafkaProcessor.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/MemberRepository.java
+/Users/seoyeon/IdeaProjects/OnePoint/member/src/main/java/OnePoint/Application.java
