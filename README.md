@@ -1,6 +1,5 @@
 # OnePoint
 ![onepoint](https://user-images.githubusercontent.com/33366501/87279771-51cf6280-c52c-11ea-8e6a-170bbf44bfa9.png)
-![MSA설계](https://user-images.githubusercontent.com/33366501/87279746-4714cd80-c52c-11ea-9b09-1839421ff584.PNG)
 
 # OnePoint - 멤버십 회원기반 포인트 거래 시스템
 
@@ -45,6 +44,21 @@
 1. 성능
     1. 고객 거래 현황 분석을 위한 대량의 데이터를 실제 거래와 분리하여 확인할 수 있어야 한다.  CQRS
     1. 포인트 적립/사용거래 부하와 격리되어 회원가입/탈퇴는 자유로워야 한다.  Event driven
+
+# 분석/설계
+
+
+## AS-IS 조직 (Horizontally-Aligned)
+  ![image](https://user-images.githubusercontent.com/487999/79684144-2a893200-826a-11ea-9a01-79927d3a0107.png)
+
+## TO-BE 조직 (Vertically-Aligned)
+  ![image](https://user-images.githubusercontent.com/487999/79684159-3543c700-826a-11ea-8d5f-a3fc0c4cad87.png)
+
+
+## Event Storming 결과
+* MSAEz 로 모델링한 이벤트스토밍 결과
+![MSA설계](https://user-images.githubusercontent.com/33366501/87279746-4714cd80-c52c-11ea-9b09-1839421ff584.PNG)
+
 
 
 ##서비스 개요 
