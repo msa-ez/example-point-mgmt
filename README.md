@@ -60,6 +60,15 @@
 ![MSA설계](https://user-images.githubusercontent.com/33366501/87279746-4714cd80-c52c-11ea-9b09-1839421ff584.PNG)
 
 
+## 헥사고날 아키텍처 다이어그램 도출
+    
+![hexa](https://user-images.githubusercontent.com/33366501/87289597-cfe53680-c537-11ea-8d08-53620c8c9997.PNG)
+
+
+    - Chris Richardson, MSA Patterns 참고하여 Inbound adaptor와 Outbound adaptor를 구분함
+    - 호출관계에서 PubSub 과 Req/Resp 를 구분함
+    - 서브 도메인과 바운디드 컨텍스트의 분리:  각 팀의 KPI 별로 아래와 같이 관심 구현 스토리를 나눠가짐
+
 
 ##서비스 개요 
 *계약을 맺은 가맹점과 고객간의 포인트를 적립/사용 하는 회원포인트 시스템?? 
