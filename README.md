@@ -1,5 +1,9 @@
 # OnePoint
 
+![onepoint](https://user-images.githubusercontent.com/33366501/87279771-51cf6280-c52c-11ea-8e6a-170bbf44bfa9.png)
+
+![MSA설계](https://user-images.githubusercontent.com/33366501/87279746-4714cd80-c52c-11ea-9b09-1839421ff584.PNG)
+
 ##서비스 개요 
 *계약을 맺은 가맹점과 고객간의 포인트를 적립/사용 하는 회원포인트 시스템?? 
 
