@@ -236,6 +236,225 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 
 test 2, 5 의 사용거래 (100원 , 200원, 200원 ) * 0.98 만큼의 금액이 정산금액으로 책정됨  : 490 원 
 
+## 폴리글랏 퍼시스턴스
+
+## 폴리글랏 프로그래밍
+
+## 동기식 호출 과 Fallback 처리
+
+분석단계에서의 조건 중 하나로 거래(deal)->적립(point) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
+
+- 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
+
+```
+# (deal) PointService.java
+
+package OnePoint.external;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+@FeignClient(name = "point", url = "http://localhost:8081")
+//@FeignClient(name = "point", url = "http://point:8080")
+public interface PointService {
+
+  @RequestMapping(method = RequestMethod.POST, path = "/pointIncrease")
+  void pointIncrease(@RequestBody Point point);
+
+  @RequestMapping(method = RequestMethod.POST, path = "/pointDecrease")
+  @ResponseBody
+  String pointDecrease(@RequestBody Point point);
+}
+```
+
+- 거래를 수신한 직후 (@PostPersist) Point 관련 TR을 요청하도록 처리
+```
+# Deal.java (Entity)
+
+    @PrePersist
+    public void onPrePersist() {
+    if (this.getType().equals("save")) { // 1. 적립 거래 발생
+      setSaveDeal();
+      OnePoint.external.Point point = new OnePoint.external.Point();
+      //1.input값 셋팅
+      point.setMemberId(this.getMemberId());
+      point.setPoint(this.getPoint());
+
+      Application.applicationContext.getBean(OnePoint.external.PointService.class)
+          .pointIncrease(point);
+
+    } else if (this.getType().equals("use")) { //2. 사용거래
+      setUseDeal();
+      OnePoint.external.Point point = new OnePoint.external.Point();
+      point.setMemberId(this.getMemberId());
+      point.setPoint(this.getPoint());
+
+      String pointDecreaseResult = Application.applicationContext.getBean(PointService.class)
+          .pointDecrease(point);
+
+      if (pointDecreaseResult.equals("false")) {
+        this.setStatus("fail");
+        System.out.println("유효하지 않은 거래이기 떄문에 삭제되었습니다.");
+      }
+    }
+  }
+
+
+  /**
+   * 1. 사용거래 success 발생 시 , BillingAmountView 전달을 위해 비동기 통신을 함
+   */
+
+  @PostPersist
+  public void onPostPersist() {
+    if (this.getType().equals("use") && this.getStatus().equals("success")) {
+
+      // 사용거래, 성공 시 view 생성을 위해 이벤트 발행
+      UseRequested useRequested = new UseRequested();
+      useRequested.setId(this.getId());
+      useRequested.setMerchantId(this.getMerchantId());
+      useRequested.setDealDate(this.getDealDate());
+      useRequested.setType(this.getType());
+      useRequested.setPoint(this.getPoint());
+    //  useRequested.setBillingStatus("no");
+
+      BeanUtils.copyProperties(this, useRequested);
+      useRequested.publishAfterCommit();
+    } else if (this.getType().equals("save")) {
+
+      SaveDealt saveDealt = new SaveDealt();
+      saveDealt.setId(this.getId());
+      saveDealt.setMerchantId(this.getMerchantId());
+      saveDealt.setDealDate(this.getDealDate());
+      saveDealt.setType(this.getType());
+      saveDealt.setPoint(this.getPoint());
+     // saveDealt.setBillingStatus("no");
+
+
+      BeanUtils.copyProperties(this, saveDealt);
+      saveDealt.publishAfterCommit();
+
+
+    } else if (this.getType().equals("saveCancel")) { //3. 적립거래취
+      setSaveCancelDeal();
+      SavedDealCancelled savedDealCancelled = new SavedDealCancelled();
+      savedDealCancelled.setId(this.getId());
+      savedDealCancelled.setMerchantId(this.getMerchantId());
+      savedDealCancelled.setDealDate(this.getDealDate());
+      savedDealCancelled.setType(this.getType());
+      savedDealCancelled.setPoint(this.getPoint());
+  //    savedDealCancelled.setBillingStatus("no");
+
+      BeanUtils.copyProperties(this, savedDealCancelled);
+      savedDealCancelled.publishAfterCommit();
+
+      //
+    } else if (this.getType().equals("useCancel")) { //4. 사용거래 취소
+      setUseCancelDeal();
+
+      //사용거래 취소 !! -> 만약 dealingstatus가 ... 아 그러면 동기호출을 해와야 되는데 잠깐 패쓰!
+
+      UsedDealCancelled usedDealCancelled = new UsedDealCancelled();
+
+      usedDealCancelled.setId(this.getId());
+      usedDealCancelled.setMerchantId(this.getMerchantId());
+      usedDealCancelled.setDealDate(this.getDealDate());
+      usedDealCancelled.setType(this.getType());
+      usedDealCancelled.setPoint(this.getPoint());
+     // usedDealCancelled.setBillingStatus("no");
+
+
+      BeanUtils.copyProperties(this, usedDealCancelled);
+      usedDealCancelled.publishAfterCommit();
+    }
+  }
+}
+```
+
+- 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, Point 관리 시스템이 장애가 나면 Point관련 거래는 불가능 하다는 것을 확인:
+
+
+```
+[[[[[[ 동기식 호출 이미지 첨부 ]]]]]]
+```
+- 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
+
+## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
+
+
+회원가입이 이루어진 후에 Point시스템으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 Point관리 시스템의 처리를 위하여 회원가입/탈퇴가 블로킹 되지 않아도록 처리한다.
+ 
+- 이를 위하여 회원가입처리를 진행한 이후에 가입처리가 완료되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
+ 
+```
+package OnePoint;
+
+@Entity
+@Table(name = "Member_table")
+public class Member {
+
+ ...
+  @PrePersist
+  public void onPrePersist() {
+    MemberCreated memberCreated = new MemberCreated();
+    memberCreated.setStatus("valid");
+    this.setStatus("valid");
+    memberCreated.setMemberId(this.getMemberId());
+    BeanUtils.copyProperties(this, memberCreated);
+    memberCreated.publishAfterCommit();
+  }
+
+}
+```
+- Point 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
+
+```
+package fooddelivery;
+
+...
+
+@Service
+public class PolicyHandler{
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+
+        if(결제승인됨.isMe()){
+            System.out.println("##### listener 주문정보받음 : " + 결제승인됨.toJson());
+            // 주문 정보를 받았으니, 요리를 슬슬 시작해야지..
+            
+        }
+    }
+
+}
+
+```
+실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:
+  
+```
+  @Autowired 주문관리Repository 주문관리Repository;
+  
+  @StreamListener(KafkaProcessor.INPUT)
+  public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+
+      if(결제승인됨.isMe()){
+          카톡전송(" 주문이 왔어요! : " + 결제승인됨.toString(), 주문.getStoreId());
+
+          주문관리 주문 = new 주문관리();
+          주문.setId(결제승인됨.getOrderId());
+          주문관리Repository.save(주문);
+      }
+  }
+
+```
+
+상점 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 상점시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
+```
+[[[[[[ 동기식 호출 이미지 첨부 ]]]]]]
+
+```
 
 =====================================================================
 
