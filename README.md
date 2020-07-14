@@ -57,7 +57,7 @@
 
 ## Event Storming 결과
 * MSAEz 로 모델링한 이벤트스토밍 결과
-![MSA설계](https://user-images.githubusercontent.com/33366501/87279746-4714cd80-c52c-11ea-9b09-1839421ff584.PNG)
+![MSA설계2](https://user-images.githubusercontent.com/33366501/87380560-b1ca1580-c5cd-11ea-83f9-b13d5d2efb9d.PNG)
 
 
 ## 헥사고날 아키텍처 다이어그램 도출
