@@ -89,8 +89,93 @@ cd dealdashboard
 mvn spring-boot:run 
 ```
 
+## DDD 의 적용
+
+- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: 
+
+```
+package OnePoint;
+
+import OnePoint.external.PointService;
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.BeanUtils;
 
 
+@Entity
+@Getter
+@Setter
+@Table(name = "Deal_table")
+public class Deal {
+
+  // @Autowired
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  private Long memberId;
+  private Long merchantId;
+  private Date dealDate;
+  private Double point;
+  private String type;
+  private Double dealAmount;
+  private String status; // 거래 성공여부
+  private String billingStatus; //정산여부
+
+  /**
+   * 적립거래 발생 시 데이터 셋
+   */
+  public void setSaveDeal() {
+    Date now = new Date();
+    this.setDealDate(now);
+    if (this.dealAmount != null) {
+      this.setPoint(this.dealAmount * 0.01);
+    }
+    this.setStatus("success");
+    this.setBillingStatus("no");
+  }
+
+  /**
+   * 사용거래 발생 시 데이터 셋팅 , 포인트가 함께 들어옴
+   */
+  public void setUseDeal() {
+    System.out.println("##사용 생성자로 들어옴");
+    Date now = new Date();
+    this.setDealDate(now);
+    this.setStatus("success");
+    this.setBillingStatus("no");
+  }
+
+  /**
+   * 사용취소 거래 발생 시 , 데이터 셋팅
+   */
+  private void setUseCancelDeal() {
+    Date now = new Date();
+    this.setDealDate(now);
+    this.setStatus("success");
+    this.setBillingStatus("no");
+  }
+
+  /**
+   * 적립취소거리 발생 시, 데이터 셋팅
+   */
+  private void setSaveCancelDeal() {
+    Date now = new Date();
+    this.setDealDate(now);
+    this.setStatus("success");
+    this.setBillingStatus("no");
+  }
+
+```
+
+=====================================================================
 
 ##서비스 개요 
 *계약을 맺은 가맹점과 고객간의 포인트를 적립/사용 하는 회원포인트 시스템?? 
