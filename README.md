@@ -153,26 +153,6 @@ public class Deal {
     this.setBillingStatus("no");
   }
 
-  /**
-   * 사용취소 거래 발생 시 , 데이터 셋팅
-   */
-  private void setUseCancelDeal() {
-    Date now = new Date();
-    this.setDealDate(now);
-    this.setStatus("success");
-    this.setBillingStatus("no");
-  }
-
-  /**
-   * 적립취소거리 발생 시, 데이터 셋팅
-   */
-  private void setSaveCancelDeal() {
-    Date now = new Date();
-    this.setDealDate(now);
-    this.setStatus("success");
-    this.setBillingStatus("no");
-  }
-
 ```
 
 =====================================================================
