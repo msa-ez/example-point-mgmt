@@ -22,6 +22,35 @@
     - [무정지 재배포](#무정지-재배포)
   - [신규 개발 조직의 추가](#신규-개발-조직의-추가)
 
+##서비스 개요 
+* 멤버십 회원관리에 대한 기본적인 프로세스를 모델링 한 시스템으로 회원관리 부터 정산까지의
+  Core Process를 각각의 Micro Service로 구현
+
+## Micro Serive 소개 
+* Billing
+	* 가맹점 별 월 단위 정산을 도와주는 시스템 
+	* 주요기능 : 정산년월, 정산가맹점 번호를 입력받아 해당 정산년월의 정산금액을 반환  
+* BillingAmountView
+	*  정산을 위해 거래 발생 시, 실패하지 않은 사용 거래에 대해서만 Data를 쌓아 놓은 View 
+* Point
+	* 회원 별 보유포인트 금액 을 관리하는 시스템 
+	* Deal 시스템에서 성공 거래가 일어날 시, 보유포인트를 증가/감소 시켜 줌 
+* Member
+	* 회원 정보 관리 시스템으로 보유 포인트에 대한 정보가 아닌 전화번호, 이메일주소 등 변경이 잦지 않은 회원정보를 관리하는 시스템
+	* 회원가입 시 Point 시스템에 회원-Point 생성을 요청 함 
+	* 회원 탈퇴 시 Point 시스템에 회원-Point 삭제를 요청 함 
+* Deal 
+	* 거래관리 시스템. 성공/실패 거래를 모두 관리하는 시스템. 
+	* 적립거래 발생 시 Point 시스템에 적립된 금액 만큼에 대한 보유포인트 증가를 요청함 
+	* 사용거래 발생 시 Point 시스템과 동기 통신을 통해 사용가능한 포인트인지 확인하고, 거래 성공 시 Point 시스템에 보유포인트 차감을 요청함  
+	* 사용거래 발생 시 거래가 성공인 case에 대해서만 BillingAmountView 시스템에 거래를 누적시킴
+* DealDashBoard
+	* 회원별 Point 거래내역과 회원 탈퇴 여부를 조회하는 시스템
+	* 적립거래, 사용거래 시 발생한 모든 Point 내역을 보여줌
+	* 회원 탈퇴 시 회원 State 변경, 정산 시 정산 State를 변경함
+ 
+##
+
 # 서비스 시나리오
 
 기능적 요구사항
@@ -408,82 +437,41 @@ public class Member {
 
 }
 ```
-- Point 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
+- Point 서비스에서는 회원가입 이벤트에 대해서 이를 수신하여 자신의 정책(Point생성)을 처리하도록 PolicyHandler 를 구현한다:
 
 ```
-package fooddelivery;
+package OnePoint.handeler;
 
 ...
 
 @Service
 public class PolicyHandler{
 
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+  @StreamListener(KafkaProcessor.INPUT)
+  public void wheneverMemberCreated_MemberCreated(@Payload MemberCreated memberCreated) {
 
-        if(결제승인됨.isMe()){
-            System.out.println("##### listener 주문정보받음 : " + 결제승인됨.toJson());
-            // 주문 정보를 받았으니, 요리를 슬슬 시작해야지..
-            
-        }
+    if (memberCreated.isMe()) {
+
+      Point point = new Point();
+      point.setMemberId(memberCreated.getMemberId());
+      point.setPoint(0.0);
+
+      pointRepository.save(point);
+
+      System.out.println("##### listener MemberCreated : " + memberCreated.toJson());
     }
 
 }
 
 ```
-실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:
-  
+
+회원관리 시스템은 Point관리 서비스와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, Point관리시스템이 유지보수로 인해 잠시 내려간 상태라도 회원가입을 받는데 문제가 없다:
 ```
-  @Autowired 주문관리Repository 주문관리Repository;
-  
-  @StreamListener(KafkaProcessor.INPUT)
-  public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
-
-      if(결제승인됨.isMe()){
-          카톡전송(" 주문이 왔어요! : " + 결제승인됨.toString(), 주문.getStoreId());
-
-          주문관리 주문 = new 주문관리();
-          주문.setId(결제승인됨.getOrderId());
-          주문관리Repository.save(주문);
-      }
-  }
-
-```
-
-상점 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, 상점시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
-```
-[[[[[[ 동기식 호출 이미지 첨부 ]]]]]]
+[[[[[[ 비동기식 호출 이미지 첨부 ]]]]]]
 
 ```
 
 =====================================================================
 
-##서비스 개요 
-*계약을 맺은 가맹점과 고객간의 포인트를 적립/사용 하는 회원포인트 시스템?? 
-
-## Micro Serive 소개 
-* Billing
-	* 가맹점 별 월 단위 정산을 도와주는 시스템 
-	* 주요기능 : 정산년월, 정산가맹점 번호를 입력받아 해당 정산년월의 정산금액을 반환  
-* BillingAmountView
-	*  정산을 위해 거래 발생 시, 실패하지 않은 사용 거래에 대해서만 Data를 쌓아 놓은 View 
-* Point
-	* 회원 별 보유포인트 금액 을 관리하는 시스템 
-	* Deal 시스템에서 성공 거래가 일어날 시, 보유포인트를 증가/감소 시켜 줌 
-* Member
-	* 회원 정보 관리 시스템으로 보유 포인트에 대한 정보가 아닌 전화번호, 이메일주소 등 변경이 잦지 않은 회원정보를 관리하는 시스템
-	* 회원가입 시 Point 시스템에 회원-Point 생성을 요청 함 
-	* 회원 탈퇴 시 Point 시스템에 회원-Point 삭제를 요청 함 
-* Deal 
-	* 거래관리 시스템. 성공/실패 거래를 모두 관리하는 시스템. 
-	* 적립거래 발생 시 Point 시스템에 적립된 금액 만큼에 대한 보유포인트 증가를 요청함 
-	* 사용거래 발생 시 Point 시스템과 동기 통신을 통해 사용가능한 포인트인지 확인하고, 거래 성공 시 Point 시스템에 보유포인트 차감을 요청함  
-	* 사용거래 발생 시 거래가 성공인 case에 대해서만 BillingAmountView 시스템에 거래를 누적시킴
-* DealDashBoard
-	* 회원별 Point 거래내역과 회원 탈퇴 여부를 조회하는 시스템
-	* 적립거래, 사용거래 시 발생한 모든 Point 내역을 보여줌
-	* 회원 탈퇴 시 회원 State 변경, 정산 시 정산 State를 변경함
- 
-##
 
 
