@@ -166,7 +166,7 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 }
 ```
 - 적용 후 REST API 의 테스트
-```
+
 ## 테스트 시나리오 
 1. memberId 0001 사용자가 적립거래를 10000원 발생 시킨 뒤 다시 취소시킴. 적립률(0.01)은 고정이고 거래금액*적립률 만큼의 Point가 쌓임 
 
@@ -237,7 +237,7 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 
 test 2, 5 의 사용거래 (100원 , 200원, 200원 ) * 0.98 만큼의 금액이 정산금액으로 책정됨  : 490 원 
 
-```
+
 =====================================================================
 
 ##서비스 개요 
