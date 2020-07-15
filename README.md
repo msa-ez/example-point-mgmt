@@ -479,10 +479,22 @@ public class PolicyHandler{
 ```
 
 회원관리 시스템은 Point관리 서비스와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, Point관리시스템이 유지보수로 인해 잠시 내려간 상태라도 회원가입을 받는데 문제가 없다:
-```
-[[[[[[ 비동기식 호출 이미지 첨부 ]]]]]]
 
-```
+![image](https://user-images.githubusercontent.com/33366501/87497810-4e092080-c691-11ea-9e20-548ed09563e6.png)
+정상상태 시 member->point 비동기 호출이 정상 작동함 
+
+![image](https://user-images.githubusercontent.com/33366501/87497873-6c6f1c00-c691-11ea-8c74-9b5159ae45fb.png)
+Point 서비스 내림 
+
+![image](https://user-images.githubusercontent.com/33366501/87497898-801a8280-c691-11ea-9ca6-6679b0d1d525.png)
+Point서비스 내려가있음???
+
+![image](https://user-images.githubusercontent.com/33366501/87497957-a6d8b900-c691-11ea-994b-f7a06f6855ed.png)
+Point 서비스 내려간 상태에서 Member는 정상기동
+
+![image](https://user-images.githubusercontent.com/33366501/87497998-c4a61e00-c691-11ea-9e79-ead2548c348e.png)
+
+Point서비스 내려간 상태에서 온 Member요청이 Point 서비스 기동 후 수행되는 것을 알 수 있음
 
 # 운영
 
