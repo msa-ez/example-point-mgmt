@@ -487,9 +487,6 @@ public class PolicyHandler{
 Point 서비스 내림 
 
 ![image](https://user-images.githubusercontent.com/33366501/87497898-801a8280-c691-11ea-9ca6-6679b0d1d525.png)
-Point서비스 내려가있음???
-
-![image](https://user-images.githubusercontent.com/33366501/87497957-a6d8b900-c691-11ea-994b-f7a06f6855ed.png)
 Point 서비스 내려간 상태에서 Member는 정상기동
 
 ![image](https://user-images.githubusercontent.com/33366501/87497998-c4a61e00-c691-11ea-9e79-ead2548c348e.png)
