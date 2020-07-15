@@ -505,8 +505,8 @@ Point서비스 내려간 상태에서 온 Member요청이 Point 서비스 기동
 ![image](https://user-images.githubusercontent.com/33366501/87500288-100efb00-c697-11ea-9cab-f132554f9578.png)
 
 * 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
-- 동시사용자 100명
-- 60초 동안 실시
+- 동시사용자 3명
+- 10초 동안 실시
 
 ![image](https://user-images.githubusercontent.com/33366501/87498129-0e8f0400-c692-11ea-8038-2b23b82f0749.png)
 Hystrix적용전 availability 100 프로 
