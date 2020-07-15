@@ -195,6 +195,17 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 ```
 
 ## REST API 테스트 시나리오 
+
+1. 회원을 등록/ 확인 
+
+
+|요청 | Point | status |dealDate |
+|-------------------------------------------------------------------------------------------------|:-------:|------:|------------:|
+|http POST http://localhost:8082/members name="안서연" phone="01011111111" address="용인시 기흥구 구갈동"|   |    |    |
+|http POST http://localhost:8082/members name="김준혁" phone="0102223111" address="경기도 하남시"|    |    |    |  
+|http get http://localhost:8082/members/1                                                         |    | | |
+|http get http://localhost:8082/members/1|   |    |    |
+
 1. memberId 0001 사용자가 적립거래를 10000원 발생 시킨 뒤 다시 취소시킴. 적립률(0.01)은 고정이고 거래금액*적립률 만큼의 Point가 쌓임 
 
 
