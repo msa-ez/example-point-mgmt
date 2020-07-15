@@ -553,5 +553,6 @@ kubectl get deploy pay -w
 ![image](https://user-images.githubusercontent.com/33366501/87498549-fc619580-c692-11ea-928f-1d0a3943320e.png)
 
 * readinessProbe 적용 재배포시 availability 100% 확인 
+![image](https://user-images.githubusercontent.com/33366501/87498577-11d6bf80-c693-11ea-8ed1-fcfe0150ea7d.png)
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
