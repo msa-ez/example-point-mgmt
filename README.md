@@ -545,34 +545,13 @@ kubectl get deploy pay -w
 
 ## 무정지 재배포
 
-* 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
+* CB설정 제거 후 Availablity 100% 확인 후 다시 readinessProbe 적용 없이 재배포시 availability 62%까지 감소 
 
-- seige 로 배포작업 직전에 워크로드를 모니터링 함.
-```
-[[[[[ 이미지 : 배포작업 직전 siege 모니터링]]]]]]]
-```
-- 새버전으로의 배포 시작
-```
-kubectl set image ...
-```
+![image](https://user-images.githubusercontent.com/33366501/87498397-a8ef4780-c692-11ea-8834-e48a001e5139.png)
 
-- seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
+* deployment.yaml 파일에 readinessProbe 
+![image](https://user-images.githubusercontent.com/33366501/87498549-fc619580-c692-11ea-928f-1d0a3943320e.png)
 
-```
-[[[[[[ 이미지: siege availability 감소 결과 ]]]]]
-```
-배포기간중 Availability 가 평소 100%에서 x% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
+* readinessProbe 적용 재배포시 availability 100% 확인 
 
-```
-# deployment.yaml 의 readiness probe 의 설정:
-
-
-kubectl apply -f kubernetes/deployment.yaml
-```
-
-- 동일한 시나리오로 재배포 한 후 Availability 확인:
-
-```
-[[[[[[[[ 이미지 : probe 설정 ,재배포 후 siege 결과 ]]]]]
-```
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
