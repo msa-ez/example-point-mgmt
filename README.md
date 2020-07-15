@@ -196,7 +196,7 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 
 ## REST API 테스트 시나리오 
 
-1. 회원을 등록/ 확인 
+0. 회원을 등록/ 확인 
 
 
 |요청 | Point | status |dealDate |
@@ -258,20 +258,23 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 |http GET http://localhost:8081/points/0002 		|  600 | | |
 
 
-6. memberId 0002 사용자의 모든 거래내역 조회. 사용자 탈퇴 후 상태 조회. 
+6. 정산요청 
 
 |요청 | Point | status |dealDate |
 |-------------------------------------------------------------------------------------------------|:-------:|------:|------------:|
-|http "거래내역 조회(DealDashBoard)"                                                               | | | |
-|http "사용자 탈퇴"                                                                                | | | |
-|http "사용자 상태 조회(DealDashBoard)"                                                            | | | |
+|http POST http://localhost:8084/billings mercharntId=20 billingMonth="202007" 98원 정산 금액 나옴                                                               | | | |
+|http POST http://localhost:8084/billings mercharntId=20 billingMonth="202007" 98원 정산 금액 나옴                                                                                | | | |
 
 
-7. 가맹점 20 번의 7월 정산요청 
+7. 회원탈퇴 : 아래 회원 상태가다 바뀌어야 됨
 
 |요청 | Point | status |dealDate |
 |-------------------------------------------------------------------------------------------------|:-------:|------:|------------:|
-|http POST http://localhost:8084/billings mercharntId=20 billingMonth="202007" | | | |
+|http DELETE http://localhost:8082/members/1 | | | |
+|http GET http://localhost:8083/billingAmountViews/1 | | | |
+|http GET http://localhost:8083/billingAmountViews/2 | | | |
+|http GET http://localhost:8083/billingAmountViews/3 | | | |
+|http GET http://localhost:8083/billingAmountViews/4 | | | |
 
 test 2, 5 의 사용거래 (100원 , 200원, 200원 ) * 0.98 만큼의 금액이 정산금액으로 책정됨  : 490 원 
 
