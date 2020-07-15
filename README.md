@@ -344,10 +344,6 @@ public interface PointService {
   }
 
 
-  /**
-   * 1. 사용거래 success 발생 시 , BillingAmountView 전달을 위해 비동기 통신을 함
-   */
-
   @PostPersist
   public void onPostPersist() {
     if (this.getType().equals("use") && this.getStatus().equals("success")) {
