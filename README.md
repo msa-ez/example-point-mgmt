@@ -276,7 +276,6 @@ public interface PointRepository extends PagingAndSortingRepository<Point, Long>
 |http GET http://localhost:8083/billingAmountViews/3 | | | |
 |http GET http://localhost:8083/billingAmountViews/4 | | | |
 
-test 2, 5 의 사용거래 (100원 , 200원, 200원 ) * 0.98 만큼의 금액이 정산금액으로 책정됨  : 490 원 
 
 ## 폴리글랏 퍼시스턴스
 
