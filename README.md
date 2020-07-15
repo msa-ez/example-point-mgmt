@@ -526,18 +526,25 @@ Hystrix 적용 후 availability 감소
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
 
-- 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
+- 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 2%를 넘어서면 replica 를 10개까지 늘려준다
+  (계속적인 부하 테스트 이후 CPU사용량을 최종 2%까지 설정해봄)
 ```
-kubectl autoscale deploy pay --min=1 --max=10 --cpu-percent=15
+kubectl autoscale deploy deal --min=1 --max=10 --cpu-percent=2
+kubectl get hpa
 ```
 - CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
 ```
-siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
+siege -c20 -t60S -v --content-type "application/json" 'http://deal:8080/deals POST {"memberId": "0001", "merchantId":"20", "dealAmount":"100000", "type":"save"}'
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
 ```
 kubectl get deploy pay -w
 ```
+- pod의 CPU사용률 확인
+```
+kubectl top pods
+```
+
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 -------------------------------------------------------------------------------
 ![hpa](https://user-images.githubusercontent.com/33366501/87496416-7e9b8b00-c68e-11ea-871b-8d9e8ab0cf8a.png)
