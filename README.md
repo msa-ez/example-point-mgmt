@@ -505,8 +505,8 @@ Point서비스 내려간 상태에서 온 Member요청이 Point 서비스 기동
 
 ![image](https://user-images.githubusercontent.com/33366501/87498175-1fd81080-c692-11ea-8dc1-b15e3850f5f8.png)
 
-- 피호출 서비스(포인트사용:point) 의 임의 부하 처리 - 400 밀리에서 증감 220 밀리 정도 왔다갔다 하게
-![image](https://user-images.githubusercontent.com/33366501/87498205-2ebec300-c692-11ea-9e99-0a36c0e47fb7.png)
+- 피호출 서비스(포인트적립:point) 의 임의 부하 처리 - 400 밀리에서 증감 220 밀리 정도 왔다갔다 하게
+![image](https://user-images.githubusercontent.com/33366501/87500288-100efb00-c697-11ea-9cab-f132554f9578.png)
 
 * 부하테스터 siege 툴을 통한 서킷 브레이커 동작 확인:
 - 동시사용자 100명
@@ -515,11 +515,11 @@ Point서비스 내려간 상태에서 온 Member요청이 Point 서비스 기동
 ![image](https://user-images.githubusercontent.com/33366501/87498129-0e8f0400-c692-11ea-8038-2b23b82f0749.png)
 Hystrix적용전 availability 100 프로 
 
-![image](https://user-images.githubusercontent.com/33366501/87498318-7e04f380-c692-11ea-8805-b56f2ad3dcf8.png)
+![image](https://user-images.githubusercontent.com/33366501/87500273-0ab1b080-c697-11ea-9dd2-abeeb8906bff.png)
 Hystrix 적용 후 availability 감소
 
 
-- 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 23% 가 성공하였고, 77%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 Retry 설정과 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
+- 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 93% 가 성공하였고, 7%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 Retry 설정과 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
 
 ### 오토스케일 아웃
